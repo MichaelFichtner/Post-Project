@@ -13,8 +13,9 @@ $vnNamen = $vn->getAll();
 
 if (key_exists('senden', $_POST))
 {
-    $vorname = $_POST['vorname'];
-    $nachname = $_POST['nachname'];
+    $vorname    = $_POST['vorname'];
+    $nachname   = $_POST['nachname'];
+    $id         = $_POST['update_id'];
     if (strlen($vorname) == 0)
     {
         $error->addMessage('Vorname fehlt.');
@@ -28,15 +29,42 @@ if (key_exists('senden', $_POST))
         *Gibt es Vorname und Nachname Kombi schon in Datenbank ?
        */
 
-    if ($vn->checkUser($vorname, $nachname) == FALSE)
+    if ($vn->checkUser($vorname, $nachname) == TRUE)
     {
-        $error->addMessage('User nicht vorhanden');
+        $error->addMessage('User vorhanden');
     }
-    else
+    
+    if (!$error->hasMesasage())
     {
-        $error->addMessage('User "' . $vorname . ' , ' . $nachname . '" exestiert schon');
+        $vn->setVorname($vorname);
+        $vn->setNachname($nachname);
+        $vn->newUser();
     }
+    
+    
+
 }
+
+    if (key_exists('del', $_POST))
+    {
+        $del_id = $_POST['delete_id'];
+        
+        // Html::printValues(is_array($del_id));
+        
+        
+        
+        if (!$del_id)
+        {
+            $error->addMessage('Datensatz zum loeschen nicht markiert !');
+        }
+        else
+        {
+            for ($i = 0; $i < count($del_id); $i++)
+            {
+                echo '.... ' . $del_id[$i];
+            }
+        }
+    }
 
 
 

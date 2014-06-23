@@ -80,9 +80,9 @@ class VnName {
         $this->connect->query($sql);
     }
     
-    public function newUser($newvorname , $newnachname) {
+    public function newUser() {
         
-        $sql = "INSERT INTO vnnamen (id , vorname , nachname) VALUES (null , '$newvorname' , '$newnachname');";
+        $sql = "INSERT INTO vnnamen (id , vorname , nachname) VALUES (null , '$this->vorname' , '$this->nachname');";
         
         $this->connect->query($sql);
         
