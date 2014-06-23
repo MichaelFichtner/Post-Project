@@ -95,5 +95,18 @@ class VnName {
         
         $this->connect->query($sql);
     }
+    
+    public function checkUser($vorname , $nachname)
+    {
+        $sql = "SELECT id, vorname, nachname FROM vnnamen WHERE vorname = '$vorname'AND nachname = '$nachname';";
+        
+        $res = $this->connect->query($sql);
+        
+        if($this->connect->result_row($res) == 0)
+        {
+            return FALSE;
+        }    
+        return TRUE;
+    }
 }
 

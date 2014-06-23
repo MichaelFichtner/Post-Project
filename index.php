@@ -23,7 +23,22 @@ if (key_exists('senden', $_POST))
     {
         $error->addMessage('Nachname fehlt.');
     }
+    
+   /* 
+        *Gibt es Vorname und Nachname Kombi schon in Datenbank ?
+       */
+
+    if ($vn->checkUser($vorname, $nachname) == FALSE)
+    {
+        $error->addMessage('User nicht vorhanden');
+    }
+    else
+    {
+        $error->addMessage('User "' . $vorname . ' , ' . $nachname . '" exestiert schon');
+    }
 }
+
+
 
 ?>
 <!DOCTYPE html>

@@ -95,6 +95,12 @@ class dbKlasse
         return($row);
     }
     
+    public function result_row()
+    {
+        $row = mysql_fetch_row($this->injection);
+        return($row);
+    }
+    
     public function insertDb($sqlinj)
     {
         if (!$sqlinj)
