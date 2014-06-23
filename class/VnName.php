@@ -1,6 +1,6 @@
 <?php
 
-include_once 'dbKlasse.php';
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +23,7 @@ class VnName {
 
     
     public function __construct() {
-        $this->connect = new dbKlasse("localhost", "Peter", "Pan", "namen");
+        $this->connect = new dbKlasse(DB_HOST, DB_USER, DB_PW, DB_NAME);
     }
 
     public function getId() {

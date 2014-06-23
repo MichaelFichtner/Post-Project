@@ -1,6 +1,7 @@
 <?php
 
-
+include_once './config.php';
+include_once './class/dbKlasse.php';
 include_once './class/Html.php';
 include_once './class/Fehlermeldung.php';
 include_once './class/VnName.php';
@@ -10,6 +11,8 @@ include_once './class/VnName.php';
 $vn = new VnName();
 $error = new Fehlermeldung();
 $vnNamen = $vn->getAll();
+
+
 
 if (key_exists('senden', $_POST))
 {
@@ -52,21 +55,29 @@ if (key_exists('senden', $_POST))
 
     if (key_exists('del', $_POST))
     {
+        if (@$_POST['delete_id'] > 0)
+        {
+            echo 'gut';
+            $del_id = $_POST['delete_id'];
+        }
+        else
+        {
+            echo 'fehler';
+        }
         
         
-        $del_id = $_POST['delete_id'];
         
         // Html::printValues(is_array($del_id));
         
         var_dump (is_array($del_id));
  
-           if (is_array($del_id) == TRUE)
-        {
-                        for ($i = 0; $i < count($del_id); $i++)
-            {
-                echo '.... ' . $del_id[$i];
-            }
-        } 
+//           if (is_array($del_id) == TRUE)
+//        {
+//                        for ($i = 0; $i < count($del_id); $i++)
+//            {
+//                echo '.... ' . $del_id[$i];
+//            }
+//        } 
 
     }
 
