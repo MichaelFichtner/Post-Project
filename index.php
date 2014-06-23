@@ -5,51 +5,25 @@ include_once './class/Html.php';
 include_once './class/Fehlermeldung.php';
 include_once './class/VnName.php';
 
-Html::printValues($_POST);
+// Html::printValues($_POST);
 
 $vn = new VnName();
 $error = new Fehlermeldung();
 $vnNamen = $vn->getAll();
 
-if(isset($_POST['senden']))
+if (key_exists('senden', $_POST))
 {
-    if(!($_POST['vorname']) && !($_POST['nachname']))
+    $vorname = $_POST['vorname'];
+    $nachname = $_POST['nachname'];
+    if (strlen($vorname) == 0)
     {
-        for ($i = 0; $i < count($vnNamen); $i++)
-            {
-                $vorname = $_POST['vornamen'];
-                $nachname = $_POST['nachnamen'];
-                $id = $_POST['update_id'];
-
-                $vn->updateUser($id[$i], $vorname[$i], $nachname[$i]);
-            }
+        $error->addMessage('Vorname fehlt.');
     }
-    else
+    if (strlen($nachname) == 0)
     {
-        $newvorname = $_POST['vorname'];
-        $newnachname = $_POST['nachname'];
-        $vn->newUser($newvorname, $newnachname);
-        echo "Neu";
+        $error->addMessage('Nachname fehlt.');
     }
 }
-//elseif (isset ($_POST['del']))
-//{
-//    $id = $_POST['delete_id'];
-//    if(!$id)
-//    {
-//        echo 'ERROR';
-//        exit;
-//    }
-//    
-//    var_dump($id);
-//    
-//    for ($i = 0; $i <= count($vnNamen); $i++)
-//    {
-//            
-//        Html::printValues($id[$i]);
-//              
-//    }
-//}
 
 ?>
 <!DOCTYPE html>
@@ -67,21 +41,7 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-
-            $message = "Test Fehler No. 1";
-            $error->addMessage($message);
-            
-            $message = "Test Fehler No. 2";
-            $error->addMessage($message);
-            
-            echo '<br>';
-            if($error->hasMesasage() === TRUE)
-            {  
                 $error->printMessage();
-            }else
-            {
-                echo 'Kein Fehler';
-            }
         ?>
         <form method="POST" action="index.php">
             
