@@ -52,7 +52,7 @@ class VnName {
 
     public function getAll()
     {   
-        $sql = "SELECT * FROM vnnamen ORDER BY `id` ASC;";
+        $sql = "SELECT * FROM vnnamen ORDER BY `id` DESC;";
 
          //$id = "BITTE alles VON test SORTIERT NACH id";
 
@@ -84,7 +84,9 @@ class VnName {
         
         $sql = "INSERT INTO vnnamen (id , vorname , nachname) VALUES (null , '$this->vorname' , '$this->nachname');";
         
-        $this->connect->query($sql);
+        $res = $this->connect->query($sql);
+        
+        return $res;
         
     }
     

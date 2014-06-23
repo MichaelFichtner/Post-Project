@@ -38,7 +38,12 @@ if (key_exists('senden', $_POST))
     {
         $vn->setVorname($vorname);
         $vn->setNachname($nachname);
-        $vn->newUser();
+        $success = $vn->newUser();
+        if(!$success)
+        {
+            $error->addMessage('Nicht geklappt ... NSA ist informiert !!!');
+        }
+        
     }
     
     
@@ -47,23 +52,22 @@ if (key_exists('senden', $_POST))
 
     if (key_exists('del', $_POST))
     {
+        
+        
         $del_id = $_POST['delete_id'];
         
         // Html::printValues(is_array($del_id));
         
-        
-        
-        if (!$del_id)
+        var_dump (is_array($del_id));
+ 
+           if (is_array($del_id) == TRUE)
         {
-            $error->addMessage('Datensatz zum loeschen nicht markiert !');
-        }
-        else
-        {
-            for ($i = 0; $i < count($del_id); $i++)
+                        for ($i = 0; $i < count($del_id); $i++)
             {
                 echo '.... ' . $del_id[$i];
             }
-        }
+        } 
+
     }
 
 
