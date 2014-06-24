@@ -6,83 +6,87 @@ include_once './class/Html.php';
 include_once './class/Fehlermeldung.php';
 include_once './class/VnName.php';
 
-// Html::printValues($_POST);
+//Html::printValues($_POST);
 
 $vn = new VnName();
 $error = new Fehlermeldung();
-$vnNamen = $vn->getAll();
-
-
 
 if (key_exists('senden', $_POST))
 {
+    unset($update);
     $vorname    = $_POST['vorname'];
     $nachname   = $_POST['nachname'];
     $id         = $_POST['update_id'];
-    if (strlen($vorname) == 0)
-    {
-        $error->addMessage('Vorname fehlt.');
-    }
-    if (strlen($nachname) == 0)
-    {
-        $error->addMessage('Nachname fehlt.');
-    }
+    $vornamen   = $_POST['vornamen'];
+    $nachnamen  = $_POST['nachnamen'];
     
-   /* 
-        *Gibt es Vorname und Nachname Kombi schon in Datenbank ?
-       */
+    $update     = '';
+    
+    for ($i = 0; $i < count($id); $i++)
+    {
+        $test = $vn->updateUser($id[$i], $vornamen[$i], $nachnamen[$i]);
 
-    if ($vn->checkUser($vorname, $nachname) == TRUE)
-    {
-        $error->addMessage('User vorhanden');
-    }
-    
-    if (!$error->hasMesasage())
-    {
-        $vn->setVorname($vorname);
-        $vn->setNachname($nachname);
-        $success = $vn->newUser();
-        if(!$success)
+        if ($test == TRUE)
         {
-            $error->addMessage('Nicht geklappt ... NSA ist informiert !!!');
+            $update = $test;
         }
-        
     }
     
+    if(!$update)
+    {
     
+        if (strlen($vorname) == 0)
+        {
+            $error->addMessage('Vorname fehlt.');
+        }
+        if (strlen($nachname) == 0)
+        {
+            $error->addMessage('Nachname fehlt.');
+        }
 
+                /* 
+                     *Gibt es Vorname und Nachname Kombi schon in Datenbank ?
+                    */
+
+        if ($vn->checkUser($vorname, $nachname) == TRUE)
+        {
+            $error->addMessage('User vorhanden');
+        }
+
+            /* Neuer User in Datenbank schreiben*/
+
+        if (!$error->hasMesasage())
+        {
+            $vn->setVorname($vorname);
+            $vn->setNachname($nachname);
+            $success = $vn->newUser();
+            if(!$success)
+            {
+                $error->addMessage('Nicht geklappt ... NSA ist informiert !!!');
+            }
+
+        }
+    }
 }
 
-    if (key_exists('del', $_POST))
+if (key_exists('del', $_POST))
+{
+    if (isset($_POST['delete_id']))
     {
-        if (@$_POST['delete_id'] > 0)
+        $del_id = $_POST['delete_id'];
+        for ($i = 0; $i < count($del_id); $i++)
         {
-            echo 'gut';
-            $del_id = $_POST['delete_id'];
+            $vn->delete($del_id[$i]);
         }
-        else
-        {
-            echo 'fehler';
-        }
-        
-        
-        
-        // Html::printValues(is_array($del_id));
-        
-        var_dump (is_array($del_id));
- 
-//           if (is_array($del_id) == TRUE)
-//        {
-//                        for ($i = 0; $i < count($del_id); $i++)
-//            {
-//                echo '.... ' . $del_id[$i];
-//            }
-//        } 
-
     }
+    else
+    {
+        $error->addMessage('Bitte wählen Sie welch(e) Datensätze gelöscht werden sollen');
+    }
+}
 
 
-
+$vnNamen = $vn->getAll();
 ?>
 <!DOCTYPE html>
 <!--
@@ -95,7 +99,6 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title>POST - Projekt</title>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
-
     </head>
     <body>
         <?php
@@ -139,7 +142,6 @@ and open the template in the editor.
                         echo    '<td><input type="checkbox" name="delete_id[]" value="' . $vnNamen[$i]->getId() . '" /></td>';
                         echo    '</tr>';
                     }
-                    
                     ?>
                     
                 </tbody>

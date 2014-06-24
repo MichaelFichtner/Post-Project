@@ -80,22 +80,24 @@ class VnName {
         $this->connect->query($sql);
     }
     
-    public function newUser() {
-        
+    public function newUser()
+    {    
         $sql = "INSERT INTO vnnamen (id , vorname , nachname) VALUES (null , '$this->vorname' , '$this->nachname');";
         
         $res = $this->connect->query($sql);
         
-        return $res;
-        
+        return $res;   
     }
     
     public function updateUser($id , $vorname , $nachname)
     {   
         $sql ="UPDATE vnnamen SET vorname = '$vorname' , nachname = '$nachname' WHERE id = '$id';";
-       
-        
-        $this->connect->query($sql);
+        $res = $this->connect->query($sql);
+        if(mysql_affected_rows() == 0)
+        {
+            return FALSE;
+        }
+        return TRUE;
     }
     
     public function checkUser($vorname , $nachname)
