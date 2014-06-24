@@ -19,22 +19,35 @@ if (key_exists('senden', $_POST))
     $id         = $_POST['update_id'];
     $vornamen   = $_POST['vornamen'];
     $nachnamen  = $_POST['nachnamen'];
-    
+    $test       = FALSE;
     $update     = '';
     
     for ($i = 0; $i < count($id); $i++)
     {
-        $test = $vn->updateUser($id[$i], $vornamen[$i], $nachnamen[$i]);
+        if(!$vornamen[$i])
+        {
+            $error->addMessage('Vorname nicht geändert bei "Nachname" : ' . $nachnamen[$i]);
+        }
+        if(!$nachnamen[$i])
+        {
+            $error->addMessage('Nachname nicht geändert bei "Vorname" : ' . $vornamen[$i]);
+        }
         
+        if (!$error->hasMesasage())
+        {
+            $test = $vn->updateUser($id[$i], $vornamen[$i], $nachnamen[$i]);
+        }
+
         if ($test == TRUE)
         {
             $update = $test;
         }
+        
     }
     
-    Html::printValues($del_string);
     
-    if(!$update)
+    
+    if(!$update && !$error->hasMesasage())
     {
     
         if (strlen($vorname) == 0)
