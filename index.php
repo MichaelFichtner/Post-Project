@@ -32,7 +32,7 @@ if (key_exists('senden', $_POST))
         }
     }
     
-    Html::printValues($del_string);
+    
     
     if(!$update)
     {
