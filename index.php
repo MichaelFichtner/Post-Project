@@ -25,12 +25,14 @@ if (key_exists('senden', $_POST))
     for ($i = 0; $i < count($id); $i++)
     {
         $test = $vn->updateUser($id[$i], $vornamen[$i], $nachnamen[$i]);
-
+        
         if ($test == TRUE)
         {
             $update = $test;
         }
     }
+    
+    Html::printValues($del_string);
     
     if(!$update)
     {
@@ -97,7 +99,7 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>POST - Projekt</title>
+        <title>POST - Projekt V 1.0</title>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
